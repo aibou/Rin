@@ -43,10 +43,13 @@ type Credentials struct {
 	AWS_SECRET_ACCESS_KEY string `yaml:"aws_secret_access_key"`
 	AWS_REGION            string `yaml:"aws_region"`
 	AWS_IAM_ROLE          string `yaml:"aws_iam_role"`
+	AWS_REDSHIFT_ROLE     string `yaml:"aws_redshift_role"`
 }
 
 func (c Credentials) RedshiftCredential() string {
-	if c.AWS_IAM_ROLE != "" {
+	if c.AWS_REDSHIFT_ROLE != "" {
+		return fmt.Sprintf("aws_iam_role=%s", c.AWS_REDSHIFT_ROLE)
+	} else if c.AWS_IAM_ROLE != "" {
 		return fmt.Sprintf("aws_iam_role=%s", c.AWS_IAM_ROLE)
 	} else {
 		return fmt.Sprintf("aws_access_key_id=%s;aws_secret_access_key=%s", c.AWS_ACCESS_KEY_ID, c.AWS_SECRET_ACCESS_KEY)
